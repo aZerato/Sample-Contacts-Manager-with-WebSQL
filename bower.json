@@ -1,0 +1,20 @@
+{
+  "name": "annuaire-js",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "EMEA\\j-p.cartoux <jean-philippe.cartoux@modisfrance.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  }
+}
