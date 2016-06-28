@@ -33,9 +33,10 @@ ContactController.prototype.Init = function() {
 			null)
 		.then(function(data) {
 			self.model.list = JSON.parse(data);
-			self.model.Persist();
+			Database.Insert('contacts', self.model.list);
 			self.RenderList();
 		});
+		
 	});
 };
 
