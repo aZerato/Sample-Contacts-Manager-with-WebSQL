@@ -11,7 +11,7 @@ module.exports = function(grunt){
 			},
 			server: {
 				// Gets the port from the connect information
-				path: './app/index.html'
+				path: url + '/app/index.html'
 			}
 		},
 		connect: {
