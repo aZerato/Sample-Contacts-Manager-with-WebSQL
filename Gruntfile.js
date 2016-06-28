@@ -5,15 +5,26 @@ module.exports = function(grunt){
 	// Grunt configuration
 	grunt.initConfig({
 		open: {
-			all: {
+			release: {
 				// Gets the port from the connect information
 				path: url
+			},
+			server: {
+				// Gets the port from the connect information
+				path: './app/index.html'
 			}
 		},
 		connect: {
-			server: {
+			release: {
 				options: {
 					base :'dist/',
+					port: port,
+					keepalive: true
+				}
+			},
+			server: {
+				options: {
+					base :'./',
 					port: port,
 					keepalive: true
 				}
@@ -91,7 +102,7 @@ module.exports = function(grunt){
 
 
 	// Tasks definition
-	grunt.registerTask('default', ['open','connect:server']);
+	grunt.registerTask('default', ['open:server','connect:server']);
 	grunt.registerTask('build', [
 		'clean:dist',
 		'useminPrepare',
@@ -101,7 +112,9 @@ module.exports = function(grunt){
 		'uglify',
 		'filerev',
 		'usemin',
-		'clean:tmp'
+		'clean:tmp',
+		'open:release',
+		'connect:release'
 	]);
 
 }

@@ -1,18 +1,6 @@
 var ContactList = function()
 {
-	this.list = [];
-};
-
-ContactList.prototype.Refresh = function() {
-	delete this.list;
-
-	this.list = [];
-	
-	var storage = localStorage.getItem("annuaire");
-	if(storage != null)
-	{
-		this.list = JSON.parse(storage);
-	}
+	this.list = JSON.parse(localStorage.getItem("annuaire")) || [];
 };
 
 ContactList.prototype.Add = function(contact) {

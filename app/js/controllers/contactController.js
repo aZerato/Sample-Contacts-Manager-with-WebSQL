@@ -7,6 +7,9 @@ var ContactController = function(formSelector)
 ContactController.prototype.Init = function() {
 	var self = this;
 
+	// default render list function if elements in localstorage
+	self.RenderList();
+
 	// Add
 	var elInputContactBtn = self.elForm.querySelector('[data-action="add"]');
 	elInputContactBtn.addEventListener('click', function(event) {
@@ -24,13 +27,13 @@ ContactController.prototype.Init = function() {
 	elInputContactRefreshBtn.addEventListener('click', function(event) {
 		event.preventDefault();
 		
-		//self.model.Refresh();
 		Core.http('GET', 
 			'http://www.mocky.io/v2/576bae931100003d0666670a', 
 			true, 
 			null)
 		.then(function(data) {
 			self.model.list = JSON.parse(data);
+			self.model.Persist();
 			self.RenderList();
 		});
 	});
