@@ -24,9 +24,15 @@ ContactController.prototype.Init = function() {
 	elInputContactRefreshBtn.addEventListener('click', function(event) {
 		event.preventDefault();
 		
-		self.model.Refresh();
-
-		self.RenderList();
+		//self.model.Refresh();
+		Core.http('GET', 
+			'http://www.mocky.io/v2/576bae931100003d0666670a', 
+			true, 
+			null)
+		.then(function(data) {
+			self.model.list = JSON.parse(data);
+			self.RenderList();
+		});
 	});
 };
 

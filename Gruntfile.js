@@ -23,13 +23,13 @@ module.exports = function(grunt){
 			html: 'app/index.html',
 			options: {
 				dest: 'dist/',
-			flow: {
-				html: {
-					steps: {
-						js: ['concat','uglifyjs'],
-						css: ['cssmin']
-					},
-					post: {}
+				flow: {
+					html: {
+						steps: {
+							js: ['concat','uglifyjs'],
+							css: ['cssmin']
+						},
+						post: {}
 					}
 				}
 			}
