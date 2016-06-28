@@ -1,40 +1,54 @@
-var ContactController = function(formSelector)
+var ContactController = function(partialName, formSelector)
 {
-	this.elForm = document.querySelector(formSelector);
+	this.partialName = partialName;
+	this.formSelector = formSelector;
+	this.template = document.querySelector('[data-partial="' + this.partialName + '"]');
 	this.model = new ContactList();
+	this.elForm = undefined;
 };
 
 ContactController.prototype.Init = function() {
 	var self = this;
 
-	// default render list function if elements in localstorage
-	self.RenderList();
+	// render template
+	Core.http(
+		'GET', 
+		'partials/' + self.partialName + '.html', 
+		true, 
+		null)
+	.then(function(data) {
+		self.template.innerHTML = data;
+		self.elForm = document.querySelector(self.formSelector);
 
-	// Add
-	var elInputContactBtn = self.elForm.querySelector('[data-action="add"]');
-	elInputContactBtn.addEventListener('click', function(event) {
-		event.preventDefault();
-		
-		var contact = Core.map('[data-model="contact"]');
+		// default render list function if elements in localstorage
+		self.RenderList();
 
-		self.model.Add(contact);
+		// Add
+		var elInputContactBtn = self.elForm.querySelector('[data-action="add"]');
+		elInputContactBtn.addEventListener('click', function(event) {
+			event.preventDefault();
+			
+			var contact = Core.map('[data-model="contact"]');
 
-		self.RenderItem(contact);
-	});
+			self.model.Add(contact);
 
-	// Refresh
-	var elInputContactRefreshBtn = self.elForm.querySelector('[data-action="refresh"]');
-	elInputContactRefreshBtn.addEventListener('click', function(event) {
-		event.preventDefault();
-		
-		Core.http('GET', 
-			'http://www.mocky.io/v2/576bae931100003d0666670a', 
-			true, 
-			null)
-		.then(function(data) {
-			self.model.list = JSON.parse(data);
-			self.model.Persist();
-			self.RenderList();
+			self.RenderItem(contact);
+		});
+
+		// Refresh
+		var elInputContactRefreshBtn = self.elForm.querySelector('[data-action="refresh"]');
+		elInputContactRefreshBtn.addEventListener('click', function(event) {
+			event.preventDefault();
+			
+			Core.http('GET', 
+				'http://www.mocky.io/v2/576bae931100003d0666670a', 
+				true, 
+				null)
+			.then(function(data) {
+				self.model.list = JSON.parse(data);
+				self.model.Persist();
+				self.RenderList();
+			});
 		});
 	});
 };
