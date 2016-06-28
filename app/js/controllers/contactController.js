@@ -62,11 +62,11 @@ ContactController.prototype.RenderItem = function(contact)
 	var column = document.createElement('th');
 	row.appendChild(column);
 	column.setAttribute('scope', 'row');
-	column.innerHTML = contact.name + ' ' + contact.firstname;
+	column.innerHTML = contact.lastName + ' ' + contact.firstName;
 
 	var column2 = document.createElement('td');
 	row.appendChild(column2);
-	column2.innerHTML = contact.phone;
+	column2.innerHTML = contact.cellphone;
 
 	var column3 = document.createElement('td');
 	row.appendChild(column3);
