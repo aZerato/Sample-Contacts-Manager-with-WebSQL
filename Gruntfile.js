@@ -60,6 +60,12 @@ module.exports = function(grunt){
 				    dest: 'dist/',
 				    flatten: true,
 				    filter: 'isFile',
+				},{
+					expand: true,
+					flatten: true,
+					dest: 'dist/partials/',
+					src: ['app/partials/**'],
+					filter: 'isFile'
 				}]
 			},
 			fonts:{
