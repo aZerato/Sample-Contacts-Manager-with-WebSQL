@@ -1,2 +1,3 @@
+# Contacts management pure Javascript
 
-https://github.com/david-talabard/formation-js
+Javascript POO (2 days formation javascript)
