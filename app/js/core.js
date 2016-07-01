@@ -16,12 +16,21 @@ Core.prototype.map = function(selector) {
 	return mapObject;
 };
 
-Core.prototype.http = function(type, url, async, data)
+Core.prototype.cleanInputs = function(selector) {
+	var elForm = document.querySelector(selector);
+	var inputs = elForm.querySelectorAll('[data-model-name]');
+
+	for (var i = inputs.length - 1; i >= 0; i--) {
+		inputs[i].value = "";
+	};
+};
+
+Core.prototype.http = function(type, url, data)
 {
 	// ECMA 6 PROMISE !!
 	return new Promise(function(resolve, reject) {
 		var xmlHttp = new XMLHttpRequest();
-		xmlHttp.open(type, url, async);
+		xmlHttp.open(type, url, true);
 		xmlHttp.send(data);
 
 		xmlHttp.onload = function() {

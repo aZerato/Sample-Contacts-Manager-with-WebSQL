@@ -33,7 +33,7 @@ Database.prototype.CreateTable = function(tableName, tableProperties) {
 		return;
 	}
 
-	var request = 'CREATE TABLE IF NOT EXISTS ' + tableName + ' (id REAL UNIQUE, ' + tableProperties.join(',') + ')';
+	var request = 'CREATE TABLE IF NOT EXISTS ' + tableName + ' (' + tableProperties.join(',') + ')';
 	console.log(request);
 
 	self.db.transaction(function(tx) {
@@ -113,7 +113,7 @@ Database.prototype.Get = function(tableName, tableProperties) {
 			);
 		});
 
-		return deferred.resolve;
+		return deferred.promise;
 	}
 	else
 	{
@@ -134,7 +134,7 @@ Database.prototype.Get = function(tableName, tableProperties) {
 			);
 		});
 
-		return deferred.resolve;
+		return deferred.promise;
 	}	
 };
 
@@ -171,7 +171,7 @@ Database.prototype.Insert = function(tableName, tableProperties, tableValues) {
 	}
 
 	var request = 'INSERT INTO ' + tableName + ' (' + tableProperties.join(',') + ') ' + 
-						'VALUES (' + tableValues.join(',') + ')';
+						'VALUES ("' + tableValues.join('","') + '")';
 	console.log(request);
 
 	self.db.transaction(function(tx) {
@@ -203,15 +203,19 @@ Database.prototype.Delete = function(tableName, id) {
 		return;
 	}
 
+	var request = 'DELETE FROM ' + tableName + ' WHERE id LIKE "' + id + '"';
+
+	console.log(request);
+
 	self.db.transaction(function(tx) {
 		tx.executeSql(
-		'DELECT FROM ' + tableName + ' WHERE id = ' + id,
+		request,
 		[],
 		function(tx) {
-			console.log('Table ' + tableName + ' sucessfully deleted');
+			console.log('Table ' + tableName + ' sucessfully deleted the entry with id : ' + id);
 		},
 		function(e) {
-			console.log('Table ' + tableName + ' delete problem : ' + e.message);
+			console.log('Table ' + tableName + ' delete problem the entry with id : ' + id + '(message : ' + e.message + ')');
 		});
 	});		
 };
