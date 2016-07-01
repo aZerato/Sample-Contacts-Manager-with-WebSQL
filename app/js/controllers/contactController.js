@@ -13,15 +13,34 @@ ContactController.prototype.Init = function() {
 	// render template
 	Core.http(
 		'GET', 
-		'partials/' + self.partialName + '.html', 
-		true, 
+		'partials/' + self.partialName + '.html',
 		null)
 	.then(function(data) {
 		self.template.innerHTML = data;
 		self.elForm = document.querySelector(self.formSelector);
+		
+		self.model.Get()
+		.then(function(data) {
+			self.model.list = data;
 
-		// default render list function if elements in localstorage
-		self.RenderList();
+			if(self.model.list.length == 0)
+			{
+				Core.http('GET', 
+				'http://www.mocky.io/v2/576bae931100003d0666670a',
+				null)
+				.then(function(data) {
+					self.model.list = JSON.parse(data);
+
+					for (var i = self.model.list.length - 1; i >= 0; i--) {
+						self.model.Add(self.model.list[i]);
+					}
+					
+					self.RenderList();
+				});
+			}
+
+			self.RenderList();
+		});
 
 		// Add
 		var elInputContactBtn = self.elForm.querySelector('[data-action="add"]');
@@ -33,22 +52,9 @@ ContactController.prototype.Init = function() {
 			self.model.Add(contact);
 
 			self.RenderItem(contact);
-		});
 
-		// Refresh
-		var elInputContactRefreshBtn = self.elForm.querySelector('[data-action="refresh"]');
-		elInputContactRefreshBtn.addEventListener('click', function(event) {
-			event.preventDefault();
-			
-			Core.http('GET', 
-				'http://www.mocky.io/v2/576bae931100003d0666670a', 
-				true, 
-				null)
-			.then(function(data) {
-				self.model.list = JSON.parse(data);
-				self.model.Persist();
-				self.RenderList();
-			});
+			Core.cleanInputs('[data-model="contact"]');
+
 		});
 	});
 };
@@ -107,6 +113,11 @@ ContactController.prototype.RenderItem = function(contact)
 		self.model.Delete(contact);
 
 		self.Unrender(contact.id);
+
+		self.model.Get()
+		.then(function(data) {
+			self.model.list = data;
+		});
 	});
 };
 

@@ -1,20 +1,18 @@
 var ContactList = function()
-{
-	this.list = JSON.parse(localStorage.getItem("annuaire")) || [];
+{	
+	this.list = [];
+};
+
+ContactList.prototype.Get = function() {
+	return Database.Get('contacts');
 };
 
 ContactList.prototype.Add = function(contact) {
-	this.list.push(contact);
-
-	this.Persist();
+	Database.Insert('contacts', 
+		['id', 'lastName', 'firstName', 'email', 'cellphone'], 
+		[contact.id, contact.lastName, contact.firstName, contact.email, contact.cellphone]);
 };
 
 ContactList.prototype.Delete = function(contact) {
-	this.list.splice(this.list.indexOf(contact), 1);
-
-	this.Persist();
-};
-
-ContactList.prototype.Persist = function() {
-	localStorage.setItem("annuaire", JSON.stringify(this.list));
+	Database.Delete('contacts', contact.id);
 };
